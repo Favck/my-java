@@ -1,8 +1,10 @@
+package lab1;
 // Вариант 6
 import java.util.ArrayList;
 import java.util.LinkedList;
 import  java.util.Scanner;
 import java.util.List;
+
 
 public class lab1 {
 
@@ -41,6 +43,8 @@ public class lab1 {
         System.out.println("Часть2");
         claculateDdynamic(arrayList, linkedList);
         writeDynamyc(linkedList);
+
+        scanner.close();
     }
 
     //Подсчитывает D для статических массивов
