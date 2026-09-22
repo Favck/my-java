@@ -37,13 +37,24 @@ public class Printer {
             countPapper = pages + countPapper;
             System.out.printf("Добавлено %d листов.\nВсего: %d", pages, countPapper);
         }
+    }  
+
+    public int getCountPapper() {
+        return countPapper;
     }
-
-
-
-
-
-
+    public String getName() {
+        return name;
+    }
+    public void setCountPapper(int countPapper) {
+        if(countPapper > 0){
+            this.countPapper = countPapper;
+        }else{
+            System.out.println("Кол-во листов не может быть отрицательным");
+        }
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 }
 
 
