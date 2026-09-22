@@ -6,9 +6,17 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int check = 0;
-        int count, count_papper;
+        int count, count_Paper;
         ArrayList<Printer> printers = new ArrayList<>();
         String new_name;
+        Printer p1 = new Printer();
+        Printer p2 = new Printer("HP", 100);
+        Printer p3 = new Printer("Canon", 200);
+
+        printers.add(p1);
+        printers.add(p2);
+        printers.add(p3);
+
         while (true) {
             System.out.println("======МЕНЮ======");
             System.out.println("1. Просмотреть принтеры");
@@ -36,12 +44,12 @@ public class Main {
                     int check_edit = scanner.nextInt();
                     if (check_edit == 1){
                         System.out.println("Введите новое название:");
-                        new_name = scanner.nextLine();
-                        printers.get(num).setName(new_name);
+                        new_name = scanner.next();
+                        printers.get(num - 1).setName(new_name);
                     }else if(check_edit == 2){
                         System.out.println("Введите новое кол-во листов:");
                         count = scanner.nextInt();
-                        printers.get(num).setCountPapper(count);
+                        printers.get(num - 1).setCountPaper(count);
                     }
                     break;
                 case 3:
@@ -65,39 +73,43 @@ public class Main {
                     System.out.println("Введите номер принтера:");
                     count = scanner.nextInt();
                     System.out.println("Кол-во страниц:");
-                    count_papper = scanner.nextInt();
-                    printers.get(count).print(count_papper);
+                    count_Paper = scanner.nextInt();
+                    printers.get(count - 1).print(count_Paper);
                     break;
                 case 6:
                     getInfo(printers);
                     System.out.println("Введите номер принтера:");
                     count = scanner.nextInt();
                     System.out.println("Кол-во страниц:");
-                    count_papper = scanner.nextInt();
-                    printers.get(count).print(count_papper);
+                    count_Paper = scanner.nextInt();
+                    printers.get(count - 1).addPaper(count_Paper);
                     break;
                 case 7:
-                    getAllPappers(printers);
+                    getAllPapers(printers);
                     break;
                 case 8:
+                    System.out.println("Выход из программы!");
+                    return;
+                default:
                     break;
             }
-
+            
         }
+
     }
 
     public static void getInfo(ArrayList<Printer> printers){
         for(int i = 0; i < printers.size(); i++){
-            System.out.printf("Принтер %d: %s, %d листов\n", i+1, printers.get(i).getName(), printers.get(i).getCountPapper());
+            System.out.printf("Принтер %d: %s, %d листов\n", i+1, printers.get(i).getName(), printers.get(i).getCountPaper());
         }
     }
 
-    public static void getAllPappers(ArrayList<Printer> printers){
+    public static void getAllPapers(ArrayList<Printer> printers){
         int summ = 0;
         for(Printer printer: printers){
-            summ = summ + printer.getCountPapper();
+            summ = summ + printer.getCountPaper();
         }
-        System.out.printf("Общее кол-во листов %d: ", summ);
+        System.out.printf("Общее кол-во листов %d:\n\n", summ);
     }
 
 }
