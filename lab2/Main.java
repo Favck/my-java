@@ -27,7 +27,19 @@ public class Main {
             System.out.println("6. Добавить бумагу");
             System.out.println("7. Посчитать общее количество листов");
             System.out.println("8. Выход");
-            check = scanner.nextInt();
+            boolean condition = true;
+            while (condition) {
+                boolean check1 = scanner.hasNextInt();
+                if(check1){
+                    check = scanner.nextInt();
+                    condition = false;
+                }else{
+                    System.out.println("Попробуйте снова:");
+                    scanner.next(); 
+                }
+            }
+                    
+
             switch (check) {
                 case 1: 
                     if(printers.isEmpty()){
@@ -37,6 +49,7 @@ public class Main {
                     }
                     break;
                 case 2:
+                    if(!printers.isEmpty()){
                     getInfo(printers);
                     System.out.println("Введите номер принтера который хотите изменить");
                     int num = scanner.nextInt();
@@ -48,44 +61,65 @@ public class Main {
                         printers.get(num - 1).setName(new_name);
                     }else if(check_edit == 2){
                         System.out.println("Введите новое кол-во листов:");
-                        count = scanner.nextInt();
+                        count = checkCountPaper(scanner);
                         printers.get(num - 1).setCountPaper(count);
+                    }
+                    }else{
+                        System.out.println("Принтеры ещё не добавлены. Нажмите 3");
                     }
                     break;
                 case 3:
                     System.out.println("Введите название принтера:");
                     new_name = scanner.next();
                     System.out.println("Введите количество листов");
-                    count = scanner.nextInt();
+                    count = checkCountPaper(scanner);
                     Printer pr = new Printer(new_name, count);
                     printers.add(pr);
                     break;
                 case 4:
+                    if(!printers.isEmpty()){
                     getInfo(printers);
                     System.out.println("Введите номер принтера:");
                     count = scanner.nextInt();
                     printers.remove(count - 1);
                     System.out.println("ПОСЛЕ УДАЛЕНИЯ:");
                     getInfo(printers);
+                    }else{
+                        System.out.println("Принтеры закончились!");
+                    }
                     break;
                 case 5:
+                    if(!printers.isEmpty()){
                     getInfo(printers);
                     System.out.println("Введите номер принтера:");
                     count = scanner.nextInt();
                     System.out.println("Кол-во страниц:");
-                    count_Paper = scanner.nextInt();
+                    count_Paper = checkCountPaper(scanner);
                     printers.get(count - 1).print(count_Paper);
+                    }else{
+                        System.out.println("Принтеры ещё не добавлены. Нажмите 3");
+                    }
                     break;
                 case 6:
+                    if(!printers.isEmpty()){
                     getInfo(printers);
                     System.out.println("Введите номер принтера:");
                     count = scanner.nextInt();
                     System.out.println("Кол-во страниц:");
-                    count_Paper = scanner.nextInt();
-                    printers.get(count - 1).addPaper(count_Paper);
+                    count_Paper = checkCountPaper(scanner);
+                    printers.get(count - 1).addPaper(count_Paper);   
+                    System.out.println("Принтеры закончились!");
+                    }else{
+                        System.out.println("Принтеры ещё не добавлены. Нажмите 3");
+                    }
                     break;
+
                 case 7:
-                    getAllPapers(printers);
+                    if(!printers.isEmpty()){
+                        getAllPapers(printers);
+                    }else{
+                        System.out.println("Принтеры ещё не добавлены. Нажмите 3");
+                    }
                     break;
                 case 8:
                     System.out.println("Выход из программы!");
@@ -111,5 +145,31 @@ public class Main {
         }
         System.out.printf("Общее кол-во листов %d:\n\n", summ);
     }
+
+    public static int checkCountPaper(Scanner scanner) {
+        int count = 0;
+        boolean isValid = false;
+
+        while (!isValid) {
+            System.out.print("Введите количество бумаги (строго больше 0): ");
+
+            if (scanner.hasNextInt()) {
+                count = scanner.nextInt();
+                
+                
+                if (count > 0) {
+                    isValid = true; 
+                } else {
+                    System.out.println("Ошибка! Количество должно быть строго больше 0.");
+                }
+            } else {
+                System.out.println("Ошибка! Введены буквы или не целое число.");
+                scanner.next(); 
+            }
+        }
+
+        return count;
+    }
+
 
 }

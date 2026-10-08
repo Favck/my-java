@@ -3,7 +3,9 @@ package lab2;
 public class Printer {
     String name;
     int countPaper;
-    
+    static int test;
+
+
     public Printer(){
         this.countPaper = 0;
         this.name = "";
@@ -18,6 +20,10 @@ public class Printer {
             this.countPaper = 0;
         }
         this.name = name;
+    }
+
+    public static void testt(){
+        this.name = "123123";
     }
 
     public void print(int pages){
