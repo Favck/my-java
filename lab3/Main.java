@@ -9,5 +9,6 @@ public class Main {
         pr2.startTask(5);
         pr2.startTask(5);
         System.out.println(pr2.getWearPercentage());
+        System.out.println(pr2);
     }
 }
