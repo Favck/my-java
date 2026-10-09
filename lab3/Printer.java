@@ -129,9 +129,11 @@ public class Printer extends OfficeDevice{
 
     @Override 
     public String toString(){
+        String color = isColor ? "Да":"Нет";
+        String duplex = isDuplexSupported ? "Да":"Нет";
         return "\n" + "id: "+ id+ "\n" + "Имя: " + model + "\n" + 
-        "Параметры:\n  1. Цвет:" + isColor + 
-        "\n  2. Двойная печать: " + isDuplexSupported +
+        "Параметры:\n  1. Цвет:" + color + 
+        "\n  2. Двойная печать: " + duplex +
         "\n  3. Скорость печати: " + printSpeed + 
         "\nКол-во листов: " + paperCount + 
         "\nВсего напечатано: " + totalPagesPaper;
