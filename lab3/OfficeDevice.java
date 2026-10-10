@@ -42,6 +42,7 @@ public abstract class OfficeDevice {
 
     public void clearJam() {
         isPaperJammed = false;
+        wearPercentage = 0;
         System.out.println("Бумага выпрямлена");
     }
 
@@ -55,8 +56,8 @@ public abstract class OfficeDevice {
 
     protected void isWearPercentage(){
         double delta = 0.5 + (2.0 - 0.5) * random.nextDouble();
-        this.wearPercentage = this.wearPercentage + delta;
-        if(wearPercentage >= 100.0){
+        this.wearPercentage = Math.min(100, this.wearPercentage + delta);
+        if(wearPercentage == 100.0){
             isPaperJammed = true;
         }
     }
