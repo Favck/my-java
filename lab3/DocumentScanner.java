@@ -8,7 +8,7 @@ public class DocumentScanner extends OfficeDevice {
     private  double scanSpeed; // страниц в минуту
 
 
-    public  DocumentScanner(){
+    public DocumentScanner(){
         super("Unnamed", 0);
         this.isSheetfed = false;
         this.totalDocumentsScan = 0;

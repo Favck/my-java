@@ -1,0 +1,54 @@
+class Animal{
+
+    public void met1(){
+        promt(1)
+    }
+}
+
+
+//extends
+//met1 - назвал по другому
+//@Overload - нету
+
+class Dog extends Animal{
+    @Override
+    public void met1(){
+        print(2)
+    }
+    
+    public void met3(int b , int a){
+
+    }
+    public int met3(int a, int b){
+
+    }
+    
+}
+
+
+abstract class A {
+    abstract int a();
+}
+class B extends A {
+int a (){};....
+}
+class C extends B{
+
+}
+
+
+Dog a = new Dog();
+Animal b = a;
+
+
+A b_name;
+b_name = new B();
+
+class ASD {
+    int sum (int a,int b) {
+        return a+b;
+    }
+}
+
+
+

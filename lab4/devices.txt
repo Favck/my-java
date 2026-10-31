@@ -1,0 +1,4 @@
+type: printer, model: Xerox Phaser, paperCount: 123412341234123412341234123412341234, printSpeed: sdfasdf,0,
+type: scanner, model: Canon CanoScan, isSheetfed: true,
+случайный шум: 12345,
+type: mfp, model: Brother MFC, isColor: true, speedWork: 22.0, paperCount: 500,

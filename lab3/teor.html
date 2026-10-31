@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конспект ООП Java: от Инкапсуляции до Object</title>
+<style>
+  :root {
+    --bg: #0b0f19;
+    --card-bg: #151d30;
+    --card-border: #233252;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --success: #4ade80;
+    --danger: #f87171;
+    --warning: #fbbf24;
+    --code-bg: #070a12;
+    --quote-bg: #102038;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px 16px;
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  header {
+    border-bottom: 2px solid var(--card-border);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+  h1 { font-size: 2.1rem; color: var(--accent); margin-bottom: 8px; }
+  .subtitle { color: var(--text-muted); font-size: 1rem; }
+  
+  /* Точные определения из лекции */
+  .def-box {
+    background: var(--quote-bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .def-box .def-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .def-box p, .def-box ul {
+    color: #e2e8f0;
+    font-size: 0.98rem;
+  }
+  .def-box ul { margin-left: 20px; margin-top: 6px; }
+
+  .section-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    color: #fff;
+    font-size: 1.35rem;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+  pre {
+    background-color: var(--code-bg);
+    border-radius: 8px;
+    padding: 14px;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    margin: 12px 0;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  pre code { background: none; padding: 0; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    border: 1px solid var(--card-border);
+    padding: 10px 12px;
+    text-align: left;
+  }
+  th { background-color: rgba(255, 255, 255, 0.04); color: var(--accent); }
+  .badge-yes { color: var(--success); font-weight: bold; }
+  .badge-no { color: var(--danger); font-weight: bold; }
+
+  /* Карточки интерактивных вопросов */
+  details.trap {
+    background: #0d1424;
+    border: 1px dashed #3b527e;
+    border-radius: 8px;
+    margin: 14px 0;
+    padding: 12px 16px;
+  }
+  details.trap[open] { border-color: var(--accent); background: #0e172a; }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent);
+    user-select: none;
+  }
+  summary:hover { color: var(--accent-hover); }
+  .answer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-border);
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .tag-ce { background: rgba(248, 113, 113, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+  .tag-rt { background: rgba(251, 191, 36, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+  .tag-ok { background: rgba(74, 222, 128, 0.2); color: var(--success); border: 1px solid var(--success); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Java ООП: Полный экзаменационный конспект</h1>
+  <p class="subtitle">Слайды 15–40. Дословные формулировки из презентации + каверзные вопросы в текстовом виде (что выведет / что сломается).</p>
+</header>
+
+<!-- СЛАЙДЫ 15-17 -->
+<section class="section-card">
+  <h2>1. Инкапсуляция, Модификаторы доступа и Пакеты (Слайды 15–17)</h2>
+  
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Инкапсуляция</div>
+    <ol style="margin-left: 20px;">
+      <li>Данные и поведение объединяются в одном объекте (классе).</li>
+      <li>Внутренняя реализация скрывается.</li>
+      <li>Взаимодействие с полями только через доступные методы.</li>
+    </ol>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: java.package</div>
+    <p><strong>Пакет (package)</strong> — это группа классов, объединенных по функциональности.</p>
+    <ul>
+      <li>Объявляется в начале файла: <code>package com.example.myapp;</code> — всегда первая строка файла!</li>
+      <li>Логическая группировка (как папки на диске).</li>
+      <li>Избегание конфликтов имен.</li>
+      <li>Контроль доступа (package-private виден только в пакете).</li>
+    </ul>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Модификатор</th>
+        <th>Класс</th>
+        <th>Пакет</th>
+        <th>Наследник (другой пакет)</th>
+        <th>Весь код</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>public</code></td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-yes">✓</td>
+      </tr>
+      <tr>
+        <td><code>protected</code></td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-no">✗</td>
+      </tr>
+      <tr>
+        <td><code>(default)</code> package-private</td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-no">✗</td>
+        <td class="badge-no">✗</td>
+      </tr>
+      <tr>
+        <td><code>private</code></td>
+        <td class="badge-yes">✓</td>
+        <td class="badge-no">✗</td>
+        <td class="badge-no">✗</td>
+        <td class="badge-no">✗</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Что будет при попытке скомпилировать класс B?»</summary>
+    <pre><code>// Файл: p1/A.java
+package p1;
+public class A {
+    protected int x = 10;
+    int y = 20; // package-private
+}
+
+// Файл: p2/B.java
+package p2;
+import p1.A;
+
+public class B extends A {
+    public void print() {
+        System.out.println(this.x); // (1)
+        A other = new A();
+        System.out.println(other.x); // (2)
+        System.out.println(this.y);  // (3)
+    }
+}</code></pre>
+    <div class="answer">
+      <span class="tag tag-ce">Ошибка компиляции на строках (2) и (3)</span>
+      <p><strong>Почему:</strong></p>
+      <ul>
+        <li>(1) <code>this.x</code> компилируется: класс <code>B</code> является наследником <code>A</code> и видит унаследованное поле <code>protected</code>.</li>
+        <li>(2) <code>other.x</code> — <strong>ОШИБКА</strong>: доступ к <code>protected</code> полю объекта другого класса через прямую ссылку разрешен только внутри пакета <code>p1</code>. Потомок в другом пакете имеет доступ к нему <em>только через механизм наследования</em> (в себе), а не на произвольном экземпляре <code>new A()</code>.</li>
+        <li>(3) <code>this.y</code> — <strong>ОШИБКА</strong>: поле <code>default</code> (package-private) вообще не наследуется и не видно за пределами пакета <code>p1</code>.</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- СЛАЙДЫ 18-20 -->
+<section class="section-card">
+  <h2>2. Неизменяемые классы (Immutable) и Record (Слайды 18–20)</h2>
+  
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Immutable класс</div>
+    <p><strong>Immutable класс</strong> — объект нельзя изменить после создания.</p>
+    <p><strong>Правила создания:</strong></p>
+    <ul>
+      <li>Все поля <code>private final</code>.</li>
+      <li>Нет сеттеров.</li>
+      <li>Класс объявлен как <code>final</code> (чтобы нельзя было отнаследовать и сломать).</li>
+      <li>Если поле — изменяемый объект (например, Date или массив), возвращаем/принимаем его копию.</li>
+    </ul>
+    <p style="margin-top: 6px;"><em>Примеры встроенных неизменяемых классов:</em> String, Integer, Double, LocalDate, BigDecimal.</p>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Record (с Java 14+)</div>
+    <p>Компактная запись неизменяемого класса с данными в одну строку: <code>public record PointRecord(int x, int y) {}</code></p>
+    <p>Автоматически генерирует: конструктор, поля <code>private final</code>, <code>equals()</code>, <code>hashCode()</code>, <code>toString()</code> и методы доступа вида <code>p.x()</code> и <code>p.y()</code> (<strong>без префикса get!</strong>).</p>
+  </div>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Является ли данный класс неизменяемым? Что выведет main?»</summary>
+    <pre><code>public final class Team {
+    private final List&lt;String&gt; members;
+
+    public Team(List&lt;String&gt; members) {
+        this.members = members;
+    }
+    public List&lt;String&gt; getMembers() {
+        return members;
+    }
+}
+
+// В main:
+List&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add("Иван");
+Team t = new Team(list);
+t.getMembers().add("Петр");
+System.out.println(t.getMembers().size());</code></pre>
+    <div class="answer">
+      <span class="tag tag-ok">Выведет: 2 (Класс НЕ является неизменяемым!)</span>
+      <p><strong>Почему:</strong> Нарушено 4-е правило: «Если поле изменяемый объект, возвращаем/принимаем его копию». Передана прямая ссылка на изменяемый <code>ArrayList</code>. Модификатор <code>final</code> защищает лишь саму ссылку от перезаписи, но не запрещает менять состав коллекции.</p>
+      <p><strong>Как исправить:</strong></p>
+      <pre><code>public Team(List&lt;String&gt; members) {
+    this.members = List.copyOf(members); // Защитная копия при приеме
+}
+public List&lt;String&gt; getMembers() {
+    return members; // List.copyOf уже неизменяемый, либо List.copyOf(members)
+}</code></pre>
+    </div>
+  </details>
+</section>
+
+<!-- СЛАЙДЫ 21-25 -->
+<section class="section-card">
+  <h2>3. Наследование, super и Порядок инициализации (Слайды 21–25)</h2>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Наследование</div>
+    <p><strong>Наследование</strong> — механизм ООП, позволяющий одному классу (наследнику) получать свойства и методы другого класса (родителя).</p>
+    <p><strong>Отношение "is-a" (является):</strong> Наследник является разновидностью родителя.</p>
+    <ul>
+      <li>Собака является Животным.</li>
+      <li>Студент является Человеком.</li>
+      <li>ArrayList является List.</li>
+      <li>Ключевое слово <code>extends</code> используется для наследования.</li>
+      <li>В Java класс может наследоваться только от одного родителя (<strong>единичное наследование</strong>).</li>
+      <li>Наследник получает все public и protected (package-private если в одном пакете) поля и методы родителя.</li>
+    </ul>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: super</div>
+    <p><strong>super</strong> — ссылка на родительский класс (аналог <code>this</code> для родителя). Используется в трех случаях:</p>
+    <ol style="margin-left: 20px;">
+      <li>Вызов конструктора родителя: <code>super(параметры)</code> — <strong>должен быть первой строкой!</strong></li>
+      <li>Доступ к полю родителя (если оно перекрыто): <code>super.field</code>.</li>
+      <li>Вызов метода родителя (если он переопределен): <code>super.method()</code>.</li>
+    </ol>
+    <p style="margin-top: 6px;"><em>Правило конструктора:</em> Если в родительском классе нет конструктора по умолчанию — необходимо вызвать конструктор с параметрами родительского класса вручную через <code>super(...)</code>.</p>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Порядок инициализации при создании объекта-наследника</div>
+    <ol style="margin-left: 20px;">
+      <li>Статические поля и статические блоки родителя</li>
+      <li>Статические поля и статические блоки потомка</li>
+      <li>Нестатические поля и блоки инициализации родителя</li>
+      <li>Конструктор родителя</li>
+      <li>Нестатические поля и блоки инициализации потомка</li>
+      <li>Конструктор потомка</li>
+    </ol>
+  </div>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Что напечатает код? (Ловушка на порядок и сокрытие полей)»</summary>
+    <pre><code>class Parent {
+    int a = 10;
+    Parent() {
+        System.out.println("Parent constr, a = " + a);
+    }
+}
+
+class Child extends Parent {
+    int a = 20;
+    Child() {
+        System.out.println("Child constr, a = " + a);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        System.out.println("Field: " + p.a);
+    }
+}</code></pre>
+    <div class="answer">
+      <span class="tag tag-ok">Вывод в консоль:</span>
+      <pre>Parent constr, a = 10
+Child constr, a = 20
+Field: 10</pre>
+      <p><strong>Почему <code>Field: 10</code>, а не 20?</strong> Поля в Java <strong>не полиморфны</strong>! Поле <code>a</code> в <code>Child</code> перекрыло (shadowed/hidden), а не переопределило поле родителя. При обращении к полю через переменную типа <code>Parent</code> (ссылка <code>p</code>), компилятор берет поле родителя. Полиморфизм работает ТОЛЬКО для методов!</p>
+    </div>
+  </details>
+</section>
+
+<!-- СЛАЙДЫ 26-28 -->
+<section class="section-card">
+  <h2>4. Переопределение (@Override) и модификатор final (Слайды 26–28)</h2>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Переопределение методов (Override)</div>
+    <p><strong>Переопределение (Override)</strong> — изменение реализации метода наследника, который уже есть у родителя.</p>
+    <p><strong>Правила переопределения:</strong></p>
+    <ul>
+      <li>Имя и сигнатура (параметры) должны совпадать.</li>
+      <li>Возвращаемый тип должен быть совпадающим или ковариантным (подтипом).</li>
+      <li>Модификатор доступа нельзя сужать (можно расширять): <code>protected → public</code> (можно), <code>public → protected</code> (нельзя).</li>
+      <li>Нельзя переопределить final или static методы.</li>
+      <li>Нельзя переопределить private методы (они не наследуются).</li>
+    </ul>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Модификатор final (запрет наследования)</div>
+    <ul>
+      <li><strong>final класс</strong> — от него нельзя наследоваться.</li>
+      <li><strong>final метод</strong> — его нельзя переопределить в наследнике.</li>
+      <li><strong>final поле</strong> — его нельзя изменить после инициализации (константа).</li>
+    </ul>
+  </div>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Где здесь ошибки компиляции?»</summary>
+    <pre><code>class SuperClass {
+    Number getNum() { return 1; }
+    public void action() {}
+    static void test() {}
+}
+
+class SubClass extends SuperClass {
+    // Метод 1
+    @Override
+    Integer getNum() { return 2; }
+
+    // Метод 2
+    @Override
+    protected void action() {}
+
+    // Метод 3
+    @Override
+    static void test() {}
+}</code></pre>
+    <div class="answer">
+      <span class="tag tag-ce">Ошибки в Метод 2 и Метод 3</span>
+      <ul>
+        <li><strong>Метод 1 — скомпилируется:</strong> Возвращаемый тип <code>Integer</code> является подтипом <code>Number</code> (ковариантный тип возврата разрешен).</li>
+        <li><strong>Метод 2 — ОШИБКА:</strong> Сужение модификатора доступа с <code>public</code> до <code>protected</code> строго запрещено.</li>
+        <li><strong>Метод 3 — ОШИБКА:</strong> Статические методы принадлежат классу, а не экземпляру, их нельзя пометить <code>@Override</code>. В потомке статический метод с такой же сигнатурой лишь <em>скроет</em> метод родителя (method hiding).</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- СЛАЙДЫ 29-33 -->
+<section class="section-card">
+  <h2>5. Приведение типов, instanceof и Полиморфизм (Слайды 29–33)</h2>
+
+  <div class="def-box">
+    <div class="def-title">Определения из лекции: Upcasting и Downcasting</div>
+    <ul>
+      <li><strong>Upcasting (восходящее приведение)</strong> — приведение от наследника к родителю. Происходит автоматически.</li>
+      <li><strong>Downcasting (нисходящее приведение)</strong> — приведение от родителя к наследнику. Требует явного кастинга и проверки. Ошибка при некорректном downcasting приводит к <code>ClassCastException</code> в runtime.</li>
+    </ul>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: instanceof</div>
+    <p><strong>instanceof</strong> — проверяет, является ли объект экземпляром определенного класса (или его наследника). Возвращает <code>boolean</code>.</p>
+    <p>Начиная с Java 14, поддерживает pattern matching (связывание переменной): <code>if (animal instanceof Dog dog) { dog.bark(); }</code></p>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Полиморфизм</div>
+    <p><strong>Полиморфизм</strong> (от греч. «много форм») — способность объектов с одинаковым интерфейсом иметь разную реализацию. Один и тот же метод ведет себя по-разному для разных объектов.</p>
+    <ul>
+      <li><strong>Статический полиморфизм (Compile-time / Early binding):</strong> Перегрузка методов (Overloading) — методы с одинаковым именем, но разными параметрами. Компилятор определяет метод на этапе компиляции.</li>
+      <li><strong>Динамический полиморфизм (Runtime / Late binding):</strong> Переопределение методов (Overriding) — наследник изменяет реализацию метода родителя. JVM определяет, какой метод вызвать, во время выполнения программы (на основе реального типа объекта). JVM использует dynamic binding — ищет метод в реальном типе объекта, а не в типе ссылки.</li>
+    </ul>
+  </div>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Что произойдет при выполнении этого блока кода?»</summary>
+    <pre><code>class Bird {
+    void fly() { System.out.println("Птица летит"); }
+}
+class Penguin extends Bird {
+    @Override
+    void fly() { System.out.println("Пингвины не летают!"); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Bird b = new Penguin(); // Upcasting
+        b.fly();                // (1)
+        
+        Bird realBird = new Bird();
+        Penguin p = (Penguin) realBird; // (2) Downcasting
+        p.fly();
+    }
+}</code></pre>
+    <div class="answer">
+      <span class="tag tag-rt">Вывод: "Пингвины не летают!", а затем ClassCastException</span>
+      <p><strong>Разбор:</strong></p>
+      <ul>
+        <li>(1) Сработает динамический полиморфизм: ссылка типа <code>Bird</code> указывает на реальный объект в памяти <code>Penguin</code>. Вызовется переопределенный метод пингвина.</li>
+        <li>(2) Код скомпилируется, но упадет в runtime на строке каста: объект в памяти действительно создан как <code>new Bird()</code>, JVM не может привести его к типу <code>Penguin</code>. Чтобы избежать ошибки, обязательна проверка через <code>if (realBird instanceof Penguin p)</code>.</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- СЛАЙДЫ 34-39 -->
+<section class="section-card">
+  <h2>6. Абстракция, Абстрактные классы и Интерфейсы (Слайды 34–39)</h2>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Абстракция</div>
+    <p><strong>Абстракция</strong> — выделение существенных характеристик объекта и отвлечение от несущественных. Позволяет создавать «шаблоны» для будущих классов.</p>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Абстрактный класс и Абстрактный метод</div>
+    <p><strong>Абстрактный класс</strong> — класс, который:</p>
+    <ul>
+      <li>Объявлен с ключевым словом <code>abstract</code>.</li>
+      <li>Не может быть инициализирован (нельзя сделать <code>new AbstractClass()</code>).</li>
+      <li>Может содержать абстрактные методы (без реализации) и обычные методы (с реализацией).</li>
+      <li>Может иметь поля, конструкторы, статические методы.</li>
+    </ul>
+    <p style="margin-top: 8px;"><strong>Абстрактный метод</strong> — метод без тела (реализации). Объявляется с ключевым словом <code>abstract</code>.</p>
+    <ul>
+      <li>Может быть только в абстрактном классе или интерфейсе.</li>
+      <li>Наследник обязан реализовать все абстрактные методы родителя (или стать абстрактным сам).</li>
+      <li>Не может быть <code>private</code> (иначе наследник не сможет его реализовать).</li>
+      <li>Не может быть <code>static</code> (статические методы не переопределяются).</li>
+      <li>Не может быть <code>final</code> (final методы нельзя переопределять).</li>
+    </ul>
+  </div>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: Интерфейсы (interface)</div>
+    <p><strong>Интерфейс</strong> — это контракт, описывающий что должен уметь делать класс, но не как.</p>
+    <ul>
+      <li>Объявляется ключевым словом <code>interface</code>. Класс реализует его через <code>implements</code>.</li>
+      <li>Класс может реализовывать несколько интерфейсов (в отличие от наследования).</li>
+      <li>Методы по умолчанию неявно <code>public abstract</code>.</li>
+      <li><strong>default метод</strong> — метод с реализацией внутри интерфейса.</li>
+      <li><strong>static метод</strong> — статический метод, вызывается через <code>ИмяИнтерфейса.метод()</code>.</li>
+      <li><strong>private метод</strong> (с Java 9) — для переиспользования общего кода между default методами.</li>
+    </ul>
+    <p style="margin-top: 8px;"><strong>Множественная реализация и Конфликт default методов:</strong></p>
+    <p>Если два интерфейса содержат одинаковый default метод, компилятор выдает ошибку: <em>"inherits unrelated defaults for move() from types..."</em>. Класс <strong>обязан переопределить данный метод</strong> у себя вручную (и при желании вызвать <code>Интерфейс.super.метод()</code>).</p>
+  </div>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Скомпилируется ли код реализации интерфейса?»</summary>
+    <pre><code>interface Clickable {
+    void click();
+}
+
+class Button implements Clickable {
+    @Override
+    void click() {
+        System.out.println("Clicked");
+    }
+}</code></pre>
+    <div class="answer">
+      <span class="tag tag-ce">Ошибка компиляции: attempting to assign weaker access privileges</span>
+      <p>В интерфейсе все методы без явного модификатора <strong>неявно public abstract</strong>! В классе <code>Button</code> метод <code>void click()</code> не имеет модификатора, то есть является <code>package-private</code>. Происходит сужение доступа с <code>public</code> до <code>package-private</code>, что запрещено. Необходимо строго написать <code>public void click()</code>.</p>
+    </div>
+  </details>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Что будет при реализации двух интерфейсов с конфликтом default методов?»</summary>
+    <pre><code>interface FastRun {
+    default void run() { System.out.println("Fast"); }
+}
+interface SlowRun {
+    default void run() { System.out.println("Slow"); }
+}
+
+class Athlete implements FastRun, SlowRun {
+    @Override
+    public void run() {
+        FastRun.super.run();
+    }
+}
+// В main:
+new Athlete().run();</code></pre>
+    <div class="answer">
+      <span class="tag tag-ok">Скомпилируется и выведет: Fast</span>
+      <p>Конфликт успешно разрешен, потому что класс <code>Athlete</code> явно переопределил метод <code>run()</code> и с помощью синтаксиса <code>FastRun.super.run()</code> указал, реализацию какого именно интерфейса вызывать.</p>
+    </div>
+  </details>
+</section>
+
+<!-- СЛАЙД 40 -->
+<section class="section-card">
+  <h2>7. Класс java.lang.Object (Слайд 40)</h2>
+
+  <div class="def-box">
+    <div class="def-title">Определение из лекции: java.lang.Object</div>
+    <p><strong>java.lang.Object</strong> — родитель всех классов в Java. Любой класс, даже если вы не пишете <code>extends</code>, автоматически наследуется от <code>Object</code>.</p>
+    <p>Содержит базовые методы, которые есть у каждого объекта:</p>
+    <ul>
+      <li><code>toString()</code> — строковое представление.</li>
+      <li><code>equals(Object obj)</code> — сравнение на равенство (по умолчанию через <code>==</code>).</li>
+      <li><code>hashCode()</code> — хеш-код.</li>
+      <li><code>getClass()</code> — получение класса объекта в runtime.</li>
+      <li><code>clone()</code> — создание копии (требует реализации маркерного интерфейса <code>Cloneable</code>).</li>
+      <li><code>wait()</code>, <code>notify()</code>, <code>notifyAll()</code> — методы для многопоточной синхронизации.</li>
+    </ul>
+  </div>
+
+  <details class="trap">
+    <summary>❓ Препод в .txt: «Что выведет main при сравнении двух одинаковых по содержимому объектов?»</summary>
+    <pre><code>class Box {
+    int weight;
+    Box(int w) { this.weight = w; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Box b1 = new Box(50);
+        Box b2 = new Box(50);
+        System.out.println(b1.equals(b2));
+        System.out.println(b1 == b2);
+    }
+}</code></pre>
+    <div class="answer">
+      <span class="tag tag-ok">Вывод: false, false</span>
+      <p>В классе <code>Box</code> не переопределен метод <code>equals()</code> из <code>java.lang.Object</code>. По умолчанию метод <code>equals()</code> в классе <code>Object</code> выполняет сравнение ссылок оператором <code>==</code> (проверяет, указывают ли ссылки на одну и ту же область памяти в Heap). Так как это два разных объекта <code>new Box()</code>, оба сравнения вернут <code>false</code>.</p>
+    </div>
+  </details>
+</section>
+
+</div>
+</body>
+</html>

@@ -7,11 +7,7 @@ public class Printer extends OfficeDevice{
     private int totalPagesPaper;
     
     public Printer(){
-        super("Unnamed", 0);
-        this.isColor = true;
-        this.isDuplexSupported = true;
-        this.printSpeed = 1;
-        this.totalPagesPaper = 0;
+        this("Unnamed", 0);     
     }
 
     public Printer(String name, int countPaper){

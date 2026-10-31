@@ -9,13 +9,7 @@ public class ScannerPrinter extends OfficeDevice {
     private double speedWork; 
 
     public ScannerPrinter() {
-        super("Unnamed MFP", 50);
-        this.totalPrints = 0;
-        this.totalScans = 0;
-        this.totalCopies = 0;
-        this.isColor = true;
-        this.cartridgeInk = 100;
-        this.speedWork = 15.0;
+        this("Unnamed MFP", 50, true);
     }
 
     public ScannerPrinter(String name, int countPaper, boolean isColor) {

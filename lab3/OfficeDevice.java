@@ -9,6 +9,7 @@ public abstract class OfficeDevice {
     protected static int idCounter = 1;
     protected String model;
     protected int paperCount;
+    //TODO: заменяем список на очередь
     protected List<String> taskQueue;
     protected double wearPercentage;
     protected boolean isPaperJammed;
