@@ -1,0 +1,2 @@
+type: printer, model: Canon imageRUNNER, paperCount: 1000, isColor: false, isDuplex: true, printSpeed: 45.0,
+type: mfp, model: Xerox VersaLink, paperCount: 200, isColor: true, speedWork: 28.0,

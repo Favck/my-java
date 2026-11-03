@@ -1,0 +1,11 @@
+timestamp,id,model,wear_percentage,paper_count,is_jammed,extra_info
+2026-11-03 11:11:39,1,Canon imageRUNNER,0,56,1000,false,totalPages:0
+2026-11-03 11:11:39,2,Xerox VersaLink,1,05,200,false,cartridge:100;copies:0
+2026-11-03 11:11:41,3,Canon imageRUNNER,1,17,1000,false,totalPages:0
+2026-11-03 11:11:41,4,Xerox VersaLink,1,23,200,false,cartridge:100;copies:0
+2026-11-03 11:11:43,5,Canon imageRUNNER,1,59,1000,false,totalPages:0
+2026-11-03 11:11:43,6,Xerox VersaLink,0,55,200,false,cartridge:100;copies:0
+2026-11-03 11:11:45,7,Canon imageRUNNER,0,84,1000,false,totalPages:0
+2026-11-03 11:11:45,8,Xerox VersaLink,0,58,200,false,cartridge:100;copies:0
+2026-11-03 11:11:47,9,Canon imageRUNNER,0,71,1000,false,totalPages:0
+2026-11-03 11:11:47,10,Xerox VersaLink,0,87,200,false,cartridge:100;copies:0

@@ -1,0 +1,10 @@
+ru/university/model/ScannerPrinter.class
+ru/university/model/DeviceFileReader.class
+ru/university/view/ConsoleView.class
+ru/university/controller/AppController.class
+ru/university/controller/InputHelper.class
+ru/university/model/OfficeDevice.class
+ru/university/Main.class
+ru/university/model/DeviceManager.class
+ru/university/model/Printer.class
+ru/university/model/DocumentScanner.class
